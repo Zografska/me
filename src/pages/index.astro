@@ -211,23 +211,30 @@ const projectNames = Object.fromEntries([
       </div>
     </section>
 
-    <section id="education" class="sec sec--quiet">
+    <section id="education" class="sec sec--quiet sec--wall">
+      <p class="graffiti" aria-hidden="true">We don't need no</p>
       <h2 class="h" style="--tilt:-1.2deg">Education</h2>
-      <div class="core two-col">
-        <div>
-          {education.map((e) => (
-            <div class="edu">
-              <h3>{e.degree}</h3>
-              <p>{e.school}</p>
-              <p class="meta"><span>{e.dates}</span><span>{e.place}</span></p>
+      <div class="scrap-wrap flyer" style="--tilt:-0.6deg">
+        <span class="tape tape--tl" aria-hidden="true"></span>
+        <span class="tape tape--br" aria-hidden="true"></span>
+        <div class="scrap" style={`clip-path:${torn(77, 1.2)}`}>
+          <div class="core two-col">
+            <div>
+              {education.map((e) => (
+                <div class="edu">
+                  <h3>{e.degree}</h3>
+                  <p>{e.school}</p>
+                  <p class="meta"><span>{e.dates}</span><span>{e.place}</span></p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div>
-          <h3 class="lang-h">Languages</h3>
-          <dl class="langs">
-            {languages.map((l) => (<><dt>{l.name}</dt><dd>{l.level}</dd></>))}
-          </dl>
+            <div>
+              <h3 class="lang-h">Languages</h3>
+              <dl class="langs">
+                {languages.map((l) => (<><dt>{l.name}</dt><dd>{l.level}</dd></>))}
+              </dl>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -339,34 +346,63 @@ const projectNames = Object.fromEntries([
     const cracks = [];
     const crack = (x, y) => {
       const r = hero.getBoundingClientRect();
+      const C = 240, rnd = (a, b) => a + Math.random() * (b - a);
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.setAttribute('class', 'crack');
-      svg.setAttribute('viewBox', '0 0 240 240');
+      svg.setAttribute('viewBox', `0 0 ${C * 2} ${C * 2}`);
       svg.setAttribute('aria-hidden', 'true');
       svg.style.left = `${x - r.left}px`;
       svg.style.top = `${y - r.top}px`;
-      const n = 7 + Math.floor(Math.random() * 3);
-      const rays = [];
-      let d = '';
-      for (let i = 0; i < n; i++) {
-        const a = (i / n) * Math.PI * 2 + Math.random() * 0.5;
-        const len = 60 + Math.random() * 55;
-        let px = 120, py = 120, path = 'M120 120';
-        for (let k = 1; k <= 4; k++) {
-          const rr = (len * k) / 4, aa = a + (Math.random() - 0.5) * 0.35;
-          px = 120 + Math.cos(aa) * rr; py = 120 + Math.sin(aa) * rr;
-          path += `L${px.toFixed(1)} ${py.toFixed(1)}`;
-          if (k === 2) rays.push([px, py]);
+      // A crack wanders: short straight runs with small kinks, now and then a sharp one.
+      const walk = (x0, y0, a, len) => {
+        const pts = [[x0, y0]];
+        let px = x0, py = y0, done = 0;
+        while (done < len) {
+          const step = rnd(5, 16);
+          a += Math.random() < 0.15 ? rnd(-0.6, 0.6) : rnd(-0.18, 0.18);
+          px += Math.cos(a) * step; py += Math.sin(a) * step; done += step;
+          pts.push([px, py]);
         }
-        d += `<path pathLength="1" d="${path}" />`;
+        return pts;
+      };
+      const d = (pts) => 'M' + pts.map(([a, b]) => `${a.toFixed(1)} ${b.toFixed(1)}`).join('L');
+      const lines = []; // [points, class, delay]
+      // Main cracks at uneven angles, a few long and a few short.
+      const angles = [];
+      const n = Math.floor(rnd(4, 7));
+      while (angles.length < n) {
+        const a = rnd(0, Math.PI * 2);
+        if (angles.every((b) => Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b))) > 0.45)) angles.push(a);
       }
-      // Short splinters joining neighbouring rays, like the ring in broken glass.
-      rays.forEach(([ax, ay], i) => {
-        if (Math.random() < 0.35) return;
-        const [bx, by] = rays[(i + 1) % rays.length];
-        d += `<path class="crack-ring" pathLength="1" d="M${ax.toFixed(1)} ${ay.toFixed(1)}L${bx.toFixed(1)} ${by.toFixed(1)}" />`;
+      angles.forEach((a, i) => {
+        const pts = walk(C, C, a, i < 2 ? rnd(150, 225) : rnd(45, 130));
+        lines.push([pts, 'crack-main', 0]);
+        // Forks split off partway along and run outward.
+        const forks = Math.random() < 0.7 ? Math.floor(rnd(1, 3)) : 0;
+        for (let f = 0; f < forks; f++) {
+          const at = pts[Math.floor(rnd(0.3, 0.8) * pts.length)];
+          lines.push([walk(at[0], at[1], a + (Math.random() < 0.5 ? -1 : 1) * rnd(0.35, 0.9), rnd(25, 80)), 'crack-fork', 0.1]);
+        }
       });
-      svg.innerHTML = d;
+      // One partial ring near the impact, at most.
+      if (Math.random() < 0.5) {
+        const a0 = rnd(0, Math.PI * 2), rr = rnd(16, 34), pts = [];
+        for (let t = 0; t <= 1; t += 0.2) pts.push([C + Math.cos(a0 + t * 1.4) * rr * rnd(0.9, 1.1), C + Math.sin(a0 + t * 1.4) * rr * rnd(0.9, 1.1)]);
+        lines.push([pts, 'crack-fork', 0.15]);
+      }
+      // Crushed glass right at the impact.
+      let out = '';
+      for (let k = 0; k < 14; k++) {
+        const a = rnd(0, Math.PI * 2), r0 = rnd(0, 4), r1 = r0 + rnd(3, 11);
+        out += `<path class="crack-chip" pathLength="1" d="M${(C + Math.cos(a) * r0).toFixed(1)} ${(C + Math.sin(a) * r0).toFixed(1)}L${(C + Math.cos(a) * r1).toFixed(1)} ${(C + Math.sin(a) * r1).toFixed(1)}" />`;
+      }
+      // Each crack gets a pale glint beside it, the way a fractured edge catches light.
+      lines.forEach(([pts, cls, delay]) => {
+        const path = d(pts);
+        out += `<path class="crack-glint" pathLength="1" d="${path}" style="animation-delay:${delay}s" />`;
+        out += `<path class="${cls}" pathLength="1" d="${path}" style="animation-delay:${delay}s" />`;
+      });
+      svg.innerHTML = out;
       hero.append(svg);
       cracks.push(svg);
       if (cracks.length > 3) cracks.shift().remove();

@@ -193,9 +193,12 @@ h3 {
 .hero .scrawl { pointer-events: none; }
 @media (hover: hover) and (pointer: fine) and (min-width: 821px) { .hero .scrawl { pointer-events: auto; } }
 /* Fling a scrap hard enough and it cracks the copier glass where it lands. */
-.crack { position: absolute; z-index: 0; width: 240px; height: 240px; margin: -120px 0 0 -120px; pointer-events: none; overflow: visible; transition: opacity 1.2s ease-in; }
-.crack path { fill: none; stroke: var(--toner); stroke-width: 1.4; stroke-linejoin: bevel; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 0.22s ease-out forwards; }
-.crack .crack-ring { stroke-width: 1; animation-delay: 0.12s; }
+.crack { position: absolute; z-index: 0; width: 480px; height: 480px; margin: -240px 0 0 -240px; pointer-events: none; overflow: visible; transition: opacity 1.2s ease-in; }
+.crack path { fill: none; stroke-linecap: round; stroke-linejoin: miter; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 0.16s cubic-bezier(0.1, 0.7, 0.3, 1) forwards; }
+.crack .crack-main { stroke: var(--toner); stroke-width: 1.3; }
+.crack .crack-fork { stroke: var(--toner); stroke-width: 0.8; }
+.crack .crack-chip { stroke: var(--toner); stroke-width: 1.1; animation-duration: 0.05s; }
+.crack .crack-glint { stroke: var(--white); stroke-width: 1; opacity: 0.85; translate: 1.2px 1px; }
 .crack.is-fading { opacity: 0; }
 
 /* Stacked sheets under the card, each torn and knocked off-square. */
@@ -546,6 +549,28 @@ h3 {
 .sticker--ai[aria-pressed="true"] { background: var(--pink); color: var(--toner); }
 
 /* Education */
+/* Education: a white brick wall, after Pink Floyd's The Wall. The text sits on a flyer pasted to it. */
+.sec--wall {
+  background-color: var(--white);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='80' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M0 1c40 .6 80-.5 120 .3s80 .5 120-.2M0 41c38-.5 82 .6 120-.2s84-.4 120 .4M1 1c.4 13-.5 27 .2 40M121 1c-.5 14 .4 26-.3 40M61 41c.4 13-.3 26 .3 39M181 41c-.4 14 .5 25-.2 39'/%3E%3C/svg%3E");
+  background-size: 240px 80px;
+  background-position: 0 0;
+}
+.sec--wall .flyer { max-width: 980px; }
+.sec--wall .flyer .scrap { background: var(--paper); padding: 1.75rem 2rem 1rem; }
+.graffiti {
+  margin: 0 0 0.4rem;
+  font-family: var(--f-display);
+  font-stretch: 62%;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(1.5rem, 3.4vw, 2.6rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  transform: rotate(-4deg) skewX(-10deg);
+  transform-origin: left bottom;
+  filter: url(#marker-rough);
+}
 .two-col { max-width: 980px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem 4rem; }
 .edu { margin-bottom: 1.75rem; }
 .edu p { margin-bottom: 0.2rem; }
@@ -635,6 +660,8 @@ h3 {
 
   .shape { translate: none; } /* no parallax drift on small screens */
   .loop, .beyond, .two-col { grid-template-columns: minmax(0, 1fr); }
+  .sec--wall { background-size: 160px 53px; }
+  .sec--wall .flyer .scrap { padding: 1.4rem 1.2rem 0.6rem; }
   .p-name { padding-right: 0; }
   .project summary { padding: 1.4rem 1.2rem 1.1rem; }
   .p-bullets { padding: 0 1.2rem 1.2rem 2.4rem; }
