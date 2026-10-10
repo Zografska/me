@@ -575,9 +575,14 @@ h3 {
 .edu { margin-bottom: 1.75rem; }
 .edu p { margin-bottom: 0.2rem; }
 .lang-h { font-size: 1.3rem; }
-.langs { display: grid; grid-template-columns: auto 1fr; gap: 0.45rem 1.4rem; margin: 0.75rem 0 0; }
+/* Languages: a table ruled by hand in marker. Equal rows keep the drawn lines on the row breaks. */
+.langs-wrap { position: relative; margin: 0.9rem 0 1.25rem; }
+.langs { display: grid; grid-template-columns: 38% 1fr; grid-auto-rows: 1fr; margin: 0; }
+.langs dt, .langs dd { display: flex; align-items: center; margin: 0; padding: 0.5rem 0.8rem; line-height: 1.3; }
 .langs dt { font-family: var(--f-display); font-stretch: 87%; font-weight: 750; }
-.langs dd { margin: 0; }
+.langs-grid { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; filter: url(#marker-rough); }
+.langs-grid path { fill: none; stroke: var(--toner); stroke-width: 2.4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.langs-grid .langs-grid-in { stroke-width: 1.6; }
 
 /* Beyond code */
 .beyond {

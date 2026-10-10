@@ -230,9 +230,18 @@ const projectNames = Object.fromEntries([
             </div>
             <div>
               <h3 class="lang-h">Languages</h3>
-              <dl class="langs">
-                {languages.map((l) => (<><dt>{l.name}</dt><dd>{l.level}</dd></>))}
-              </dl>
+              <div class="langs-wrap">
+                <dl class="langs">
+                  {languages.map((l) => (<><dt>{l.name}</dt><dd>{l.level}</dd></>))}
+                </dl>
+                <svg class="langs-grid" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M-2.5 2.2C22-.8 58 3.4 102.5.2M98.6-4C101.4 28 98 66 100.9 103.5M-3 98.2C28 101.8 64 97.4 101.8 100.6M1.4-3C-1.2 31 2.4 68-.2 102.8" />
+                  <path class="langs-grid-in" d={`M37.4-3C40 28 36.2 66 39.2 103${languages.slice(1).map((_, i) => {
+                    const y = ((i + 1) * 100) / languages.length, w = i % 2 ? -1 : 1;
+                    return `M-1.5 ${y + 1.2 * w}C26 ${y - 2.2 * w} 62 ${y + 2.4 * w} 101.5 ${y - 1.1 * w}`;
+                  }).join('')}`} />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
