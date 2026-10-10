@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Personal CV site for Aleksandra Zografska, deployed to GitHub Pages at https://zografska.github.io.
+Personal CV site for Aleksandra Zografska, deployed to GitHub Pages at https://zografska.github.io/me/ (repo `me`, so Astro `base` is `/me/`).
 Astro 5, one static page, hand-written CSS. No UI kit, no Tailwind, no shadcn.
 
 ## Commands
@@ -12,7 +12,7 @@ npm run build     # must pass before any change is done
 npm run preview   # serve the production build
 ```
 
-Deploy happens automatically on push to `main` (`.github/workflows/deploy.yml`).
+Deploy happens automatically on push to `main` or `master` (`.github/workflows/deploy.yml`). Root-relative URLs in markup must be prefixed with `import.meta.env.BASE_URL`.
 
 ## Where things live
 
@@ -27,7 +27,7 @@ Deploy happens automatically on push to `main` (`.github/workflows/deploy.yml`).
 
 - The CV is the source of truth. Do not invent achievements, numbers, quotes or taglines.
 - Edit content only in `src/data/cv.ts`.
-- Pink vs blue for a technology comes from the `aiTech` set. Sticker → project highlighting comes from each project's `skills` array, which must use the exact sticker names from `skills`.
+- Pink vs black for a technology comes from the `aiTech` set. Sticker → project highlighting comes from each project's `skills` array, which must use the exact sticker names from `skills`.
 - Copy is plain and specific: active voice, sentence case, no filler, no selling.
 - The phone number stays off the site on purpose.
 
@@ -39,9 +39,9 @@ Two layers in every section:
 If something carries information a recruiter needs, it belongs to the core.
 
 Tokens (do not add new colours without a reason):
-- `--paper #D8D8D2` xerox grey background, `--toner #1E1E1C` text, `--white #F7F7F4` scraps and cards
-- `--pink #FF3F9E` = AI / LLM work, `--blue #2B47F0` = everything else. The inks carry meaning; don't use them as decoration only.
-- `--graphite #4A4D5A` secondary text
+- `--paper #FFE742` bold yellow background, `--toner #000000` text and the second ink, `--white #FFFFFF` scraps and cards
+- `--pink #FD0692` = AI / LLM work, `--toner` (black) = everything else. The inks carry meaning; don't use them as decoration only.
+- `--graphite #3A3A36` secondary text
 
 Type: Archivo Variable (condensed via `font-stretch`, 62–125%) for display, Source Serif 4 Variable for body, Courier Prime only for stamps.
 
@@ -55,7 +55,7 @@ Avoid the generic-AI-site tells: cream + terracotta, black + one neon accent, id
 ## Accessibility and responsiveness (non-negotiable)
 
 - Shapes must never sit behind body text. On mobile they retreat to corners and parallax is off.
-- Pink is never used for small text on grey (fails contrast). Toner on pink and white on blue are fine.
+- Pink is never used for small text on yellow (fails contrast). Black on pink, black on yellow and yellow on black are fine. Shapes use normal blending: multiply turns pink red on yellow.
 - Visible `:focus-visible` on everything interactive. Stickers are `<button aria-pressed>`, projects are `<details>`.
 - Decorative elements get `aria-hidden="true"` (the hero raw text, overprint copies, shapes, tape, stamps).
 - No horizontal scroll at any width. `html, body` use `overflow-x: clip`.

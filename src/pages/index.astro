@@ -21,9 +21,18 @@ const projectNames = Object.fromEntries([
   description="Lead developer working across Python, TypeScript and C#, building AI-assisted workflows and self-hosted LLM systems. Based in Milan."
 >
   <header class="hero" id="top">
-    <div class="shape shape--disc ink-pink hero-s1" data-depth="0.12" aria-hidden="true"></div>
-    <div class="shape shape--slab ink-blue hero-s2" data-depth="-0.08" aria-hidden="true"></div>
-    <div class="shape shape--wedge ink-pink hero-s3" data-depth="0.2" aria-hidden="true"></div>
+    <div class="shape shape--torn ink-pink hero-s1" style={`clip-path:${torn(3, 7, 9)}`} data-depth="0.12" aria-hidden="true"></div>
+    <div class="shape shape--torn ink-black hero-s2" style={`clip-path:${torn(5, 9, 11)}`} data-depth="-0.08" aria-hidden="true"></div>
+    <div class="shape shape--torn ink-pink hero-s3" style={`clip-path:${torn(8, 14, 7)}`} data-depth="0.2" aria-hidden="true"></div>
+    <div class="shape shape--torn dots hero-s4" style={`clip-path:${torn(21, 10, 8)}`} data-depth="-0.14" aria-hidden="true"></div>
+    <span class="tape hero-tape hero-tape--a" aria-hidden="true"></span>
+    <span class="tape hero-tape hero-tape--b" aria-hidden="true"></span>
+    <span class="tape hero-tape hero-tape--c" aria-hidden="true"></span>
+    <svg class="scrawl hero-scrawl" viewBox="0 0 200 120" aria-hidden="true"><path pathLength="1" d="M18 70C30 20 90 8 120 30s-10 70-50 60S20 40 70 22s110 0 100 40-80 50-110 30S40 30 95 40s60 30 40 50" /></svg>
+    <svg class="scrawl hero-star" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M50 6L58 42 94 34 64 56 84 90 50 68 18 92 34 56 6 36 42 42Z" /></svg>
+    <svg class="scrawl hero-x" viewBox="0 0 60 60" aria-hidden="true"><path pathLength="1" d="M8 10C22 22 40 40 52 54M50 8C36 24 22 38 10 52" /></svg>
+    <svg class="reg hero-reg hero-reg--a" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="9" /><path d="M20 2v36M2 20h36" /></svg>
+    <svg class="reg hero-reg hero-reg--b" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="9" /><path d="M20 2v36M2 20h36" /></svg>
 
     <p class="raw" aria-hidden="true">
       <span class="mk mk-circle" style="--d:.55s">Generalist<svg class="ring" viewBox="0 0 100 40" preserveAspectRatio="none"><path pathLength="1" d="M10 23C9 8 86 3 94 17c6 14-55 22-82 13C1 26 6 11 26 7" /></svg></span>
@@ -47,7 +56,7 @@ const projectNames = Object.fromEntries([
       </span>
     </h1>
 
-    <div class="scrap-wrap hero-card" style="--tilt:-2deg">
+    <div class="scrap-wrap hero-card" style={`--tilt:-2deg;--under-a:${torn(31, 2.5)};--under-b:${torn(37, 3)}`}>
       <span class="tape tape--tl" aria-hidden="true"></span>
       <span class="tape tape--br" aria-hidden="true"></span>
       <div class="scrap" style={`clip-path:${torn(11)}`}>
@@ -60,7 +69,7 @@ const projectNames = Object.fromEntries([
         <ul class="links">
           <li><a href={`mailto:${person.email}`}>Email me</a></li>
           <li><a href={person.github} rel="me">GitHub</a></li>
-          <li><a href={person.cv} download>Download CV (PDF)</a></li>
+          <li><a href={`${import.meta.env.BASE_URL}${person.cv}`} download>Download CV (PDF)</a></li>
         </ul>
       </div>
     </div>
@@ -74,7 +83,7 @@ const projectNames = Object.fromEntries([
 
   <main>
     <section id="profile" class="sec">
-      <div class="shape shape--slab ink-blue prof-s1" data-depth="0.1" aria-hidden="true"></div>
+      <div class="shape shape--slab ink-black prof-s1" data-depth="0.1" aria-hidden="true"></div>
       <h2 class="h" style="--tilt:-1.5deg">Profile</h2>
       <div class="core">
         <p class="lede">{profile}</p>
@@ -111,7 +120,7 @@ const projectNames = Object.fromEntries([
     </section>
 
     <section id="work" class="sec">
-      <div class="shape shape--wedge ink-blue work-s1" data-depth="0.14" aria-hidden="true"></div>
+      <div class="shape shape--wedge ink-black work-s1" data-depth="0.14" aria-hidden="true"></div>
       <h2 class="h" style="--tilt:-1deg">Work</h2>
       <div class="role-head core">
         <h3>{employer.title}, {employer.company}</h3>
@@ -143,7 +152,7 @@ const projectNames = Object.fromEntries([
     </section>
 
     <section id="research" class="sec">
-      <div class="shape shape--disc ink-blue res-s1" data-depth="0.12" aria-hidden="true"></div>
+      <div class="shape shape--disc ink-black res-s1" data-depth="0.12" aria-hidden="true"></div>
       <div class="shape shape--slab ink-pink res-s2" data-depth="-0.06" aria-hidden="true"></div>
       <h2 class="h" style="--tilt:1.6deg">Research</h2>
       <div class="core research-head" id={research.id} data-skills={research.skills.join('|')}>
@@ -183,7 +192,7 @@ const projectNames = Object.fromEntries([
       <div class="shape shape--wedge ink-pink sk-s1" data-depth="0.1" aria-hidden="true"></div>
       <h2 class="h" style="--tilt:1deg">Skills</h2>
       <div class="core">
-        <p>Pick a sticker to see where I used it. Pink is AI and LLM work, blue is everything else.</p>
+        <p>Pick a sticker to see where I used it. Pink is AI and LLM work, black is everything else.</p>
         <p class="sk-result" aria-live="polite" id="sk-result"></p>
       </div>
       <div class="sheet">
@@ -246,7 +255,7 @@ const projectNames = Object.fromEntries([
       <ul class="links">
         <li><a href={`mailto:${person.email}`}>{person.email}</a></li>
         <li><a href={person.github} rel="me">github.com/{person.githubHandle}</a></li>
-        <li><a href={person.cv} download>Download CV (PDF)</a></li>
+        <li><a href={`${import.meta.env.BASE_URL}${person.cv}`} download>Download CV (PDF)</a></li>
       </ul>
     </div>
     <p class="foot-name" aria-hidden="true">

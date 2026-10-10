@@ -8,13 +8,13 @@ export const person = {
   email: 'aleksndra2@gmail.com', // double-check this spelling before going live
   github: 'https://github.com/Zografska',
   githubHandle: 'Zografska',
-  cv: '/Aleksandra_Zografska_CV.pdf', // drop the PDF into /public with this name
+  cv: 'Aleksandra_Zografska_CV.pdf', // drop the PDF into /public with this name; the markup adds the base path
   coreStack: ['Python', 'TypeScript', 'C#', 'React', 'FastAPI', '.NET', 'Docker', 'Claude Code'],
 };
 
 export const profile = `Generalist software engineer with 5+ years of experience shipping web, mobile, backend and LLM-powered products across Python, TypeScript and C#. I've moved between stacks, domains and roles, from sole developer on a frontend migration to Tech Lead owning architecture and delivery, and I rely on solid engineering fundamentals to ramp up fast on whatever a project needs. AI-assisted development is part of how I work every day: I design the Claude Code workflows, skills and prompts my team develops with, keeping a human in the loop at every step. I've also built LLM systems on self-hosted models where data privacy rules out third-party APIs. Mentor to junior engineers and author of technical hiring assessments. Currently completing an MSc in Data Science for Economics at the University of Milan.`;
 
-// Technologies drawn in pink (AI / LLM). Everything else is blue.
+// Technologies drawn in pink (AI / LLM). Everything else is black.
 export const aiTech = new Set([
   'Claude Code', 'Ollama', 'Llama 3.2', 'DeepSeek', 'Hugging Face', 'sentence-transformers',
   'Cursor', 'Prompt engineering', 'Agent skills', 'MCP (FastMCP, Chrome MCP)', 'OpenAI Agents SDK',

@@ -12,7 +12,7 @@ A personal CV site on GitHub Pages that is informative first and unmistakably mi
 | Styling | Hand-written CSS, no UI kit | shadcn and similar kits produce the template look this site avoids |
 | Concept | "Unstructured → structured", as a photocopied zine | Mirrors my actual work: Linksync, the thesis, Claude Code workflows |
 | Intensity | Balanced: chaotic edges, readable core | A recruiter must find role, stack and contact in 30 seconds |
-| Colour meaning | Pink = AI / LLM, blue = everything else | The inks carry information |
+| Colour meaning | Pink = AI / LLM, black = everything else | The inks carry information |
 | Routing | Single page, anchor nav, `<details>` for projects | No SPA 404 issues on GitHub Pages |
 | Fonts | Self-hosted via Fontsource | No Google requests (GDPR) |
 | Phone number | Not on the site | Spam and scraping; it stays in the PDF |
