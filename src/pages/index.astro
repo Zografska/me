@@ -1,0 +1,324 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  person, profile, aiTech, aiLoop, aiExtras, employer, projects, research,
+  leadership, skills, education, languages, other,
+} from '../data/cv';
+import { torn, tilt } from '../lib/torn';
+
+const ink = (t: string) => (aiTech.has(t) ? 'tag tag--ai' : 'tag');
+const nav = [
+  ['profile', 'Profile'], ['ai', 'AI workflow'], ['work', 'Work'], ['research', 'Research'],
+  ['leadership', 'Leadership'], ['skills', 'Skills'], ['education', 'Education'], ['beyond', 'Beyond code'],
+];
+const projectNames = Object.fromEntries([
+  ...projects.map((p) => [p.id, p.name]),
+  [research.id, 'MSc thesis'],
+]);
+---
+<Base
+  title={`${person.name.join(' ')}, ${person.title}`}
+  description="Lead developer working across Python, TypeScript and C#, building AI-assisted workflows and self-hosted LLM systems. Based in Milan."
+>
+  <header class="hero" id="top">
+    <div class="shape shape--disc ink-pink hero-s1" data-depth="0.12" aria-hidden="true"></div>
+    <div class="shape shape--slab ink-blue hero-s2" data-depth="-0.08" aria-hidden="true"></div>
+    <div class="shape shape--wedge ink-pink hero-s3" data-depth="0.2" aria-hidden="true"></div>
+
+    <p class="raw" aria-hidden="true">
+      <span class="mk mk-circle" style="--d:.55s">Generalist<svg class="ring" viewBox="0 0 100 40" preserveAspectRatio="none"><path pathLength="1" d="M10 23C9 8 86 3 94 17c6 14-55 22-82 13C1 26 6 11 26 7" /></svg></span>
+      software engineer with <span class="mk mk-hl mk-hl--pink" style="--d:.75s">5+ years</span> of experience shipping web, mobile, backend and LLM-powered products across
+      <span class="mk mk-hl" style="--d:.95s">Python, TypeScript and C#</span>. From
+      <span class="mk mk-strike" style="--d:1.15s">sole developer</span> on a frontend migration to
+      <span class="mk mk-circle" style="--d:1.3s">Tech&nbsp;Lead<svg class="ring" viewBox="0 0 100 40" preserveAspectRatio="none"><path pathLength="1" d="M8 21C11 6 90 4 95 19c3 13-60 20-84 11C0 26 7 12 30 6" /></svg></span>
+      owning architecture and delivery. I design the
+      <span class="mk mk-hl mk-hl--pink" style="--d:1.5s">Claude Code workflows</span> my team develops with, keeping a
+      <span class="mk mk-under" style="--d:1.65s">human in the loop<svg class="squiggle" viewBox="0 0 100 10" preserveAspectRatio="none"><path pathLength="1" d="M1 6c8-5 12 4 20 0s12-5 20 0 12 4 20 0 12-5 20 0 12 4 18-1" /></svg></span>
+      at every step, and build LLM systems on self-hosted models where data privacy rules out
+      <span class="mk mk-strike" style="--d:1.8s">third-party APIs</span>.
+    </p>
+
+    <h1 class="name">
+      <span class="name-ink name-ink--base">
+        <span>{person.name[0]}</span><span>{person.name[1]}</span>
+      </span>
+      <span class="name-ink name-ink--over" aria-hidden="true">
+        <span>{person.name[0]}</span><span>{person.name[1]}</span>
+      </span>
+    </h1>
+
+    <div class="scrap-wrap hero-card" style="--tilt:-2deg">
+      <span class="tape tape--tl" aria-hidden="true"></span>
+      <span class="tape tape--br" aria-hidden="true"></span>
+      <div class="scrap" style={`clip-path:${torn(11)}`}>
+        <p class="hero-title">{person.title}</p>
+        <p class="hero-sub">{person.subtitle}</p>
+        <p class="hero-place">Based in {person.location}</p>
+        <ul class="tags" aria-label="Core stack">
+          {person.coreStack.map((t) => <li class={ink(t)}>{t}</li>)}
+        </ul>
+        <ul class="links">
+          <li><a href={`mailto:${person.email}`}>Email me</a></li>
+          <li><a href={person.github} rel="me">GitHub</a></li>
+          <li><a href={person.cv} download>Download CV (PDF)</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Sections">
+    <ul>
+      {nav.map(([id, label]) => <li><a href={`#${id}`} data-nav={id}>{label}</a></li>)}
+    </ul>
+  </nav>
+
+  <main>
+    <section id="profile" class="sec">
+      <div class="shape shape--slab ink-blue prof-s1" data-depth="0.1" aria-hidden="true"></div>
+      <h2 class="h" style="--tilt:-1.5deg">Profile</h2>
+      <div class="core">
+        <p class="lede">{profile}</p>
+      </div>
+    </section>
+
+    <section id="ai" class="sec">
+      <div class="shape shape--disc ink-pink ai-s1" data-depth="-0.1" aria-hidden="true"></div>
+      <h2 class="h" style="--tilt:1.2deg">How I work with AI</h2>
+      <div class="core">
+        <p>Claude Code runs across the full development lifecycle: planning, scaffolding, refactoring, tests, review, debugging and docs. This is the loop I built for the Game Center team.</p>
+      </div>
+      <ol class="loop">
+        {aiLoop.map((s, i) => (
+          <li class="scrap-wrap loop-step" style={`--tilt:${tilt(i + 3, 2.2)}deg`}>
+            <span class="tape tape--top" aria-hidden="true"></span>
+            <div class="scrap" style={`clip-path:${torn(40 + i, 1.4)}`}>
+              <span class="loop-n" aria-hidden="true">{i + 1}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="loop-back core">Then back to step one for the next task.</p>
+      <div class="extras core">
+        {aiExtras.map((e) => (
+          <div class="extra">
+            <h3>{e.title}</h3>
+            <p>{e.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="work" class="sec">
+      <div class="shape shape--wedge ink-blue work-s1" data-depth="0.14" aria-hidden="true"></div>
+      <h2 class="h" style="--tilt:-1deg">Work</h2>
+      <div class="role-head core">
+        <h3>{employer.title}, {employer.company}</h3>
+        <p class="meta"><span>{employer.dates}</span><span>{employer.place}</span></p>
+      </div>
+      <ol class="timeline">
+        {projects.map((p, i) => (
+          <li class="tl-item">
+            <details class="project" id={p.id} data-skills={p.skills.join('|')}>
+              <summary>
+                <span class="tape tape--peel" aria-hidden="true" style={`--tilt:${tilt(i + 20, 6)}deg`}></span>
+                {p.selfHosted && <span class="stamp" aria-hidden="true">Self-hosted</span>}
+                <h3 class="p-name">{p.name}</h3>
+                <p class="p-role">{p.role}</p>
+                {p.migration && (
+                  <p class="migration">
+                    <s>{p.migration.from}</s> <span class="mig-arrow">rebuilt as</span> <strong>{p.migration.to}</strong>
+                  </p>
+                )}
+                <p class="p-summary">{p.summary}</p>
+                <ul class="tags" aria-label="Stack">{p.stack.map((t) => <li class={ink(t)}>{t}</li>)}</ul>
+                <span class="toggle"><span class="t-open">Read the details</span><span class="t-close">Close</span></span>
+              </summary>
+              <ul class="p-bullets">{p.bullets.map((b) => <li>{b}</li>)}</ul>
+            </details>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section id="research" class="sec">
+      <div class="shape shape--disc ink-blue res-s1" data-depth="0.12" aria-hidden="true"></div>
+      <div class="shape shape--slab ink-pink res-s2" data-depth="-0.06" aria-hidden="true"></div>
+      <h2 class="h" style="--tilt:1.6deg">Research</h2>
+      <div class="core research-head" id={research.id} data-skills={research.skills.join('|')}>
+        <span class="stamp stamp--static" aria-hidden="true">Self-hosted</span>
+        <p class="meta"><span>{research.kind}</span><span>{research.status}</span></p>
+        <h3 class="thesis-title">{research.title}</h3>
+      </div>
+      <ol class="pipeline" aria-label="Thesis pipeline">
+        {research.pipeline.map((s, i) => (
+          <li class="pipe-step" style={`--tilt:${tilt(i + 60, 1.8)}deg`}>
+            <div class="scrap" style={`clip-path:${torn(70 + i, 2)}`}>
+              <h4>{s.step}</h4>
+              <p>{s.text}</p>
+            </div>
+            {i < research.pipeline.length - 1 && (
+              <svg class="pipe-arrow" viewBox="0 0 60 30" aria-hidden="true"><path d="M2 17c14-6 28 3 46-2M40 7l10 8-11 7" /></svg>
+            )}
+          </li>
+        ))}
+      </ol>
+      <div class="core">
+        <ul class="bullets">{research.bullets.map((b) => <li>{b}</li>)}</ul>
+        <ul class="tags" aria-label="Stack">{research.stack.map((t) => <li class={ink(t)}>{t}</li>)}</ul>
+      </div>
+    </section>
+
+    <section id="leadership" class="sec sec--quiet">
+      <h2 class="h" style="--tilt:-2deg">Leadership</h2>
+      <div class="core">
+        <h3>{leadership.title}, {leadership.company}</h3>
+        <p class="meta"><span>{leadership.dates}</span></p>
+        <ul class="bullets">{leadership.bullets.map((b) => <li>{b}</li>)}</ul>
+      </div>
+    </section>
+
+    <section id="skills" class="sec">
+      <div class="shape shape--wedge ink-pink sk-s1" data-depth="0.1" aria-hidden="true"></div>
+      <h2 class="h" style="--tilt:1deg">Skills</h2>
+      <div class="core">
+        <p>Pick a sticker to see where I used it. Pink is AI and LLM work, blue is everything else.</p>
+        <p class="sk-result" aria-live="polite" id="sk-result"></p>
+      </div>
+      <div class="sheet">
+        {skills.map((g, gi) => (
+          <div class="sheet-group">
+            <h3>{g.area}</h3>
+            <ul>
+              {g.items.map((s, i) => (
+                <li>
+                  <button type="button" class={aiTech.has(s) ? 'sticker sticker--ai' : 'sticker'} data-skill={s} aria-pressed="false" style={`--tilt:${tilt(gi * 31 + i, 3.5)}deg`}>{s}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="education" class="sec sec--quiet">
+      <h2 class="h" style="--tilt:-1.2deg">Education</h2>
+      <div class="core two-col">
+        <div>
+          {education.map((e) => (
+            <div class="edu">
+              <h3>{e.degree}</h3>
+              <p>{e.school}</p>
+              <p class="meta"><span>{e.dates}</span><span>{e.place}</span></p>
+            </div>
+          ))}
+        </div>
+        <div>
+          <h3 class="lang-h">Languages</h3>
+          <dl class="langs">
+            {languages.map((l) => (<><dt>{l.name}</dt><dd>{l.level}</dd></>))}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="beyond" class="sec">
+      <h2 class="h" style="--tilt:2deg">Beyond code</h2>
+      <ul class="beyond">
+        {other.map((o, i) => (
+          <li class="scrap-wrap" style={`--tilt:${tilt(i + 90, 2.6)}deg`}>
+            <span class="tape tape--top" aria-hidden="true"></span>
+            <div class="scrap" style={`clip-path:${torn(100 + i, 1.6)}`}>
+              <h3>{o.title}</h3>
+              <p class="meta"><span>{o.where}</span><span>{o.when}</span></p>
+              {o.text && <p>{o.text}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-core">
+      <p>Get in touch.</p>
+      <ul class="links">
+        <li><a href={`mailto:${person.email}`}>{person.email}</a></li>
+        <li><a href={person.github} rel="me">github.com/{person.githubHandle}</a></li>
+        <li><a href={person.cv} download>Download CV (PDF)</a></li>
+      </ul>
+    </div>
+    <p class="foot-name" aria-hidden="true">
+      <span class="fn-base">{person.name[0]}</span><span class="fn-over">{person.name[0]}</span>
+    </p>
+  </footer>
+
+  <script define:vars={{ projectNames }}>
+    // Skill stickers: light up the projects that used a skill.
+    const result = document.getElementById('sk-result');
+    const cards = [...document.querySelectorAll('[data-skills]')];
+    let active = null;
+    document.querySelectorAll('.sticker').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const skill = btn.dataset.skill;
+        const same = active === btn;
+        document.querySelectorAll('.sticker[aria-pressed="true"]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+        cards.forEach((c) => c.classList.remove('is-lit'));
+        result.textContent = '';
+        if (same) { active = null; return; }
+        active = btn;
+        btn.setAttribute('aria-pressed', 'true');
+        const hits = cards.filter((c) => c.dataset.skills.split('|').includes(skill));
+        hits.forEach((c) => c.classList.add('is-lit'));
+        if (!hits.length) {
+          result.textContent = `${skill}: on my CV, but not part of a featured project here. Ask me about it.`;
+          return;
+        }
+        result.append(`${skill} shows up in `);
+        hits.forEach((c, i) => {
+          const a = document.createElement('a');
+          a.href = `#${c.id}`;
+          a.textContent = projectNames[c.id];
+          result.append(a, i < hits.length - 2 ? ', ' : i === hits.length - 2 ? ' and ' : '.');
+        });
+      });
+    });
+
+    // Section tracking for the nav.
+    const links = new Map([...document.querySelectorAll('[data-nav]')].map((a) => [a.dataset.nav, a]));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        links.forEach((a) => a.removeAttribute('aria-current'));
+        links.get(e.target.id)?.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    links.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    // At the very bottom the last section can't reach the middle band, so mark it directly.
+    addEventListener('scroll', () => {
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) {
+        links.forEach((a) => a.removeAttribute('aria-current'));
+        [...links.values()].at(-1).setAttribute('aria-current', 'true');
+      }
+    }, { passive: true });
+
+    // Slow parallax on the background shapes. Off when reduced motion is requested.
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const shapes = [...document.querySelectorAll('[data-depth]')];
+      let ticking = false;
+      const update = () => {
+        const vh = innerHeight;
+        shapes.forEach((s) => {
+          const r = s.parentElement.getBoundingClientRect();
+          const raw = (r.top + r.height / 2 - vh / 2) * parseFloat(s.dataset.depth);
+          const off = Math.max(-60, Math.min(60, raw));
+          s.style.setProperty('--py', `${off.toFixed(1)}px`);
+        });
+        ticking = false;
+      };
+      addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      update();
+    }
+  </script>
+</Base>
