@@ -43,7 +43,7 @@ Tokens (do not add new colours without a reason):
 - `--pink #FD0692` = AI / LLM work, `--toner` (black) = everything else. The inks carry meaning; don't use them as decoration only.
 - `--graphite #3A3A36` secondary text
 
-Type: Archivo Variable (condensed via `font-stretch`, 62–125%) for display, Source Serif 4 Variable for body, Courier Prime only for stamps.
+Type: Archivo Variable for display, in exactly two styles set as tokens at the top of `global.css`: shout (`--shout-stretch` 62%, `--shout-weight` 900) for names, section headings and project titles, and label (`--label-stretch` 80%, `--label-weight` 800) for everything small. Don't introduce other widths or weights. Source Serif 4 Variable for body, Courier Prime only for stamps.
 
 Motion:
 - Two orchestrated moments: the hero sequence on load (~2.6s), and the footer name printing once (base, then pink pass) when it scrolls into view. Don't add scroll-triggered fade-ins or entrance animations to sections.
