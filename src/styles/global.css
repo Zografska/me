@@ -122,17 +122,6 @@ h3 {
 .tape--tl { top: -0.7rem; left: -1.4rem; transform: rotate(-34deg); }
 .tape--br { bottom: -0.55rem; right: -1.2rem; transform: rotate(-26deg); }
 .tape--top { top: -0.8rem; left: 50%; transform: translateX(-50%) rotate(-3deg); }
-/* Tape lifts at one end when you touch it, and peels further on click. */
-.tape:not(.tape--peel) {
-  cursor: pointer;
-  transition: rotate 0.35s cubic-bezier(0.3, 1.4, 0.4, 1), translate 0.35s cubic-bezier(0.3, 1.4, 0.4, 1), background 0.2s;
-}
-.tape:not(.tape--peel):hover, .tape.is-peeled {
-  rotate: -7deg;
-  translate: var(--dx, 0px) calc(var(--dy, 0px) - 3px);
-  background: linear-gradient(95deg, rgba(255, 255, 255, 0.6) 68%, rgba(255, 255, 255, 0.95) 68%, rgba(255, 255, 255, 0.95) 76%, rgba(0, 0, 0, 0.18) 76%, rgba(255, 255, 255, 0.6) 82%);
-}
-.tape.is-peeled { rotate: -18deg; translate: calc(var(--dx, 0px) - 4px) calc(var(--dy, 0px) - 10px); }
 
 .stamp {
   position: absolute;
@@ -395,10 +384,7 @@ h3 {
   transform: rotate(var(--tilt, 0deg));
   transform-origin: left bottom;
   text-shadow: 0.045em 0.04em 0 var(--pink);
-  transition: text-shadow 0.3s steps(3, end);
 }
-/* The press slips: the pink pass drifts further out of register. */
-.h:hover { text-shadow: 0.13em 0.07em 0 var(--pink); transition-timing-function: steps(4, end); }
 .sec--quiet .h { text-shadow: none; font-size: clamp(2.6rem, 6.5vw, 5rem); }
 .lede { font-size: clamp(1.15rem, 1.6vw, 1.32rem); line-height: 1.62; }
 

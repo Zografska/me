@@ -48,9 +48,8 @@ Type: Archivo Variable (condensed via `font-stretch`, 62–125%) for display, So
 Motion:
 - Two orchestrated moments: the hero sequence on load (~2.6s), and the footer name printing once (base, then pink pass) when it scrolls into view. Don't add scroll-triggered fade-ins or entrance animations to sections.
 - Everything else responds to the visitor or is the slow, clamped background parallax:
-  - tape lifts on hover and peels on click (project tape peels when the card opens)
+  - project tape peels when the card opens
   - hero scraps (`.shape`, `.hero-tape`, `.scrawl`) can be dragged on fine-pointer screens wider than 820px; they rise above the text only while held. A fast fling draws a broken-glass crack at the drop point, which fades after ~5s (max 3 at once).
-  - `.h` headings slip further out of register on hover
   - stamps re-stamp at a new angle on click (and don't toggle the `<details>` they sit in)
   - nav links get a marker stroke on hover/focus
   - sticker press, outline flash on lit cards

@@ -314,15 +314,6 @@ const projectNames = Object.fromEntries([
 
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Tape: click to peel it up, click again to press it back down.
-    document.querySelectorAll('.tape:not(.tape--peel)').forEach((t) => {
-      t.addEventListener('click', (e) => {
-        if (t.dataset.dragged) { t.dataset.dragged = ''; return; }
-        e.stopPropagation();
-        t.classList.toggle('is-peeled');
-      });
-    });
-
     // Stamps: click to stamp again, at a new angle, with a thud.
     document.querySelectorAll('.stamp').forEach((st) => {
       st.addEventListener('click', (e) => {
@@ -407,7 +398,6 @@ const projectNames = Object.fromEntries([
           el.removeEventListener('pointerup', up);
           el.removeEventListener('pointercancel', up);
           el.classList.remove('is-held');
-          el.dataset.dragged = moved ? '1' : '';
           if (!moved) return;
           const a = trail[0], b = trail.at(-1);
           const speed = Math.hypot(b.x - a.x, b.y - a.y) / Math.max(1, b.t - a.t);
