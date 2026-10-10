@@ -312,8 +312,129 @@ const projectNames = Object.fromEntries([
       }
     }, { passive: true });
 
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Tape: click to peel it up, click again to press it back down.
+    document.querySelectorAll('.tape:not(.tape--peel)').forEach((t) => {
+      t.addEventListener('click', (e) => {
+        if (t.dataset.dragged) { t.dataset.dragged = ''; return; }
+        e.stopPropagation();
+        t.classList.toggle('is-peeled');
+      });
+    });
+
+    // Stamps: click to stamp again, at a new angle, with a thud.
+    document.querySelectorAll('.stamp').forEach((st) => {
+      st.addEventListener('click', (e) => {
+        e.preventDefault(); // stamps inside <summary> must not toggle the project
+        e.stopPropagation();
+        st.style.setProperty('--stamp-rot', `${(-15 + Math.random() * 12).toFixed(1)}deg`);
+        if (reduce) return;
+        st.animate(
+          [{ scale: 1.7, opacity: 0 }, { scale: 0.88, opacity: 1, offset: 0.55 }, { scale: 1.04 }, { scale: 1 }],
+          { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)' },
+        );
+        (st.closest('.project') || st.parentElement).animate(
+          [{ translate: '0 0' }, { translate: '0 3px' }, { translate: '0 0' }],
+          { duration: 160, delay: 190 },
+        );
+      });
+    });
+
+    // Hero pile: drag the scraps around. Fling one hard and it cracks the copier glass.
+    const hero = document.querySelector('.hero');
+    const canDrag = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 821px)');
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+    const cracks = [];
+    const crack = (x, y) => {
+      const r = hero.getBoundingClientRect();
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'crack');
+      svg.setAttribute('viewBox', '0 0 240 240');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.style.left = `${x - r.left}px`;
+      svg.style.top = `${y - r.top}px`;
+      const n = 7 + Math.floor(Math.random() * 3);
+      const rays = [];
+      let d = '';
+      for (let i = 0; i < n; i++) {
+        const a = (i / n) * Math.PI * 2 + Math.random() * 0.5;
+        const len = 60 + Math.random() * 55;
+        let px = 120, py = 120, path = 'M120 120';
+        for (let k = 1; k <= 4; k++) {
+          const rr = (len * k) / 4, aa = a + (Math.random() - 0.5) * 0.35;
+          px = 120 + Math.cos(aa) * rr; py = 120 + Math.sin(aa) * rr;
+          path += `L${px.toFixed(1)} ${py.toFixed(1)}`;
+          if (k === 2) rays.push([px, py]);
+        }
+        d += `<path pathLength="1" d="${path}" />`;
+      }
+      // Short splinters joining neighbouring rays, like the ring in broken glass.
+      rays.forEach(([ax, ay], i) => {
+        if (Math.random() < 0.35) return;
+        const [bx, by] = rays[(i + 1) % rays.length];
+        d += `<path class="crack-ring" pathLength="1" d="M${ax.toFixed(1)} ${ay.toFixed(1)}L${bx.toFixed(1)} ${by.toFixed(1)}" />`;
+      });
+      svg.innerHTML = d;
+      hero.append(svg);
+      cracks.push(svg);
+      if (cracks.length > 3) cracks.shift().remove();
+      setTimeout(() => svg.classList.add('is-fading'), 5000);
+      setTimeout(() => { svg.remove(); cracks.splice(cracks.indexOf(svg), 1); }, 6400);
+    };
+    hero.querySelectorAll('.shape, .hero-tape, .scrawl').forEach((el) => {
+      el.addEventListener('pointerdown', (e) => {
+        if (!canDrag.matches || e.button !== 0) return;
+        e.preventDefault();
+        el.setPointerCapture(e.pointerId);
+        const sx = e.clientX, sy = e.clientY;
+        const bx = parseFloat(el.style.getPropertyValue('--dx')) || 0;
+        const by = parseFloat(el.style.getPropertyValue('--dy')) || 0;
+        let moved = false;
+        const trail = [{ x: sx, y: sy, t: e.timeStamp }];
+        el.classList.add('is-held');
+        const move = (ev) => {
+          const r = hero.getBoundingClientRect();
+          const x = clamp(ev.clientX, r.left, r.right), y = clamp(ev.clientY, r.top, r.bottom);
+          if (Math.abs(x - sx) + Math.abs(y - sy) > 4) moved = true;
+          el.style.setProperty('--dx', `${bx + x - sx}px`);
+          el.style.setProperty('--dy', `${by + y - sy}px`);
+          trail.push({ x, y, t: ev.timeStamp });
+          while (trail.length > 2 && ev.timeStamp - trail[0].t > 80) trail.shift();
+        };
+        const up = (ev) => {
+          el.removeEventListener('pointermove', move);
+          el.removeEventListener('pointerup', up);
+          el.removeEventListener('pointercancel', up);
+          el.classList.remove('is-held');
+          el.dataset.dragged = moved ? '1' : '';
+          if (!moved) return;
+          const a = trail[0], b = trail.at(-1);
+          const speed = Math.hypot(b.x - a.x, b.y - a.y) / Math.max(1, b.t - a.t);
+          if (speed > 1.2) crack(b.x, b.y);
+          if (!reduce) el.animate({ scale: [1.07, 1] }, { duration: 200, easing: 'cubic-bezier(.3,1.6,.5,1)' });
+        };
+        el.addEventListener('pointermove', move);
+        el.addEventListener('pointerup', up);
+        el.addEventListener('pointercancel', up);
+      });
+    });
+
+    // Footer: the name runs through the press once, when it comes into view.
+    const footName = document.querySelector('.foot-name');
+    if (!reduce && footName && 'IntersectionObserver' in window) {
+      footName.classList.add('foot-name--wait');
+      const fo = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        footName.classList.remove('foot-name--wait');
+        footName.classList.add('is-printed');
+        fo.disconnect();
+      }, { threshold: 0.6 });
+      fo.observe(footName);
+    }
+
     // Slow parallax on the background shapes. Off when reduced motion is requested.
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!reduce) {
       const shapes = [...document.querySelectorAll('[data-depth]')];
       let ticking = false;
       const update = () => {

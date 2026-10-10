@@ -46,8 +46,15 @@ Tokens (do not add new colours without a reason):
 Type: Archivo Variable (condensed via `font-stretch`, 62–125%) for display, Source Serif 4 Variable for body, Courier Prime only for stamps.
 
 Motion:
-- One orchestrated moment: the hero sequence on load (~2.6s). Don't add scroll-triggered fade-ins or entrance animations to sections.
-- Everything else responds to the visitor (tape peel on open, sticker press, outline flash on lit cards) or is the slow, clamped background parallax.
+- Two orchestrated moments: the hero sequence on load (~2.6s), and the footer name printing once (base, then pink pass) when it scrolls into view. Don't add scroll-triggered fade-ins or entrance animations to sections.
+- Everything else responds to the visitor or is the slow, clamped background parallax:
+  - tape lifts on hover and peels on click (project tape peels when the card opens)
+  - hero scraps (`.shape`, `.hero-tape`, `.scrawl`) can be dragged on fine-pointer screens wider than 820px; they rise above the text only while held. A fast fling draws a broken-glass crack at the drop point, which fades after ~5s (max 3 at once).
+  - `.h` headings slip further out of register on hover
+  - stamps re-stamp at a new angle on click (and don't toggle the `<details>` they sit in)
+  - nav links get a marker stroke on hover/focus
+  - sticker press, outline flash on lit cards
+- The footer print hides the name only when the script runs with motion allowed (`.foot-name--wait`), so no-JS and reduced motion show it straight away.
 - `prefers-reduced-motion` must land on the finished state. Every animation uses `both`/`forwards` so the global reduced-motion rule works.
 
 Avoid the generic-AI-site tells: cream + terracotta, black + one neon accent, identical rounded cards with soft grey shadows, gradient washes, an all-caps eyebrow over every heading, `→` appended to links, one accented word per headline. Shadows here are hard offset drop-shadows, corners are sharp.
