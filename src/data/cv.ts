@@ -12,13 +12,14 @@ export const person = {
   coreStack: ['Python', 'TypeScript', 'C#', 'React', 'FastAPI', '.NET', 'Docker', 'Claude Code'],
 };
 
-export const profile = `Generalist software engineer with 5+ years of experience shipping web, mobile, backend and LLM-powered products across Python, TypeScript and C#. I've moved between stacks, domains and roles, from sole developer on a frontend migration to Tech Lead owning architecture and delivery, and I rely on solid engineering fundamentals to ramp up fast on whatever a project needs. AI-assisted development is part of how I work every day: I design the Claude Code workflows, skills and prompts my team develops with, keeping a human in the loop at every step. I've also built LLM systems on self-hosted models where data privacy rules out third-party APIs. Mentor to junior engineers and author of technical hiring assessments. Currently completing an MSc in Data Science for Economics at the University of Milan.`;
+export const profile = `Generalist software engineer with 5+ years of experience shipping web, mobile, backend and LLM-powered products across Python, TypeScript and C#. I've moved between stacks, domains and roles, from sole developer on a frontend migration to Tech Lead owning architecture and delivery, and I rely on solid engineering fundamentals to ramp up fast on whatever a project needs. Much of my work has been on configurable, event-driven systems, where data has to be modelled carefully and move reliably between services. AI-assisted development is part of how I work every day: I design the Claude Code workflows, skills and prompts my team develops with, keeping a human in the loop at every step. I've also built LLM systems on self-hosted models where data privacy rules out third-party APIs. Mentor to junior engineers and author of technical hiring assessments. Currently completing an MSc in Data Science for Economics at the University of Milan.`;
 
 // Technologies drawn in pink (AI / LLM). Everything else is black.
 export const aiTech = new Set([
   'Claude Code', 'Ollama', 'Llama 3.2', 'DeepSeek', 'Hugging Face', 'sentence-transformers',
   'Cursor', 'Prompt engineering', 'Agent skills', 'MCP (FastMCP, Chrome MCP)', 'OpenAI Agents SDK',
   'LangChain', 'CrewAI', 'RAG', 'ChromaDB', 'LLM evaluation (golden sets, Hit@k)',
+  'Anthropic API', 'OpenAI API',
 ]);
 
 export const aiLoop = [
@@ -64,12 +65,17 @@ export const projects: Project[] = [
     bullets: [
       'Tech Lead and the one constant engineer on an internal product: own the architecture, planning and delivery, and work hands-on across the .NET services and the React client while onboarding a rotating team of 1–4 engineers.',
       'Designed a microservice architecture so game management, the challenge engine and tournament logic can be developed, deployed and scaled independently.',
-      'Moved latency-sensitive paths (live rankings and standings) onto Redis so they don’t hit the primary store on every request.',
+      'Designed the cross-service identity model: each game keeps its own Player, linked to a Game Center User through the player’s Amazon Cognito identity, so game servers never depend on the hub. Aligned the team on it with an architecture diagram, then built the account-linking and per-game profile-merge flow (for example, guest progress vs. a signed-in profile).',
+      'Modelled game results as per-game configurable attribute sets, submitted with an integrity check so the server can reject tampered results.',
+      'Built the scheduled tournament and leaderboard lifecycle job (completion detection, status transitions, reward distribution) with a guard against duplicate rewards.',
+      'Moved frequently read paths (rankings and standings) onto Redis so they don’t hit the primary store on every request.',
       'Centralised secrets and environment configuration in Infisical, keeping credentials out of the repository and consistent across environments.',
+      'Built the GitLab CI/CD for the shared React UI toolbox: a preview environment per merge request (Storybook build, Playwright tests, per-branch Docker deployment, automatic teardown on merge) so designers sign off before merge, plus tag-based publishing to the GitLab npm registry.',
+      'Built packaging and CI/CD for shared NuGet libraries multi-targeting .NET Standard 2.0 (Unity games) and .NET 8 (backend), resolving cross-framework dependency conflicts.',
       'Built the project’s Claude Code workflow (CLAUDE.md rules, debug and feature skills, Chrome MCP validation, log triage), which lets rotating team members become productive quickly.',
     ],
-    stack: ['.NET', 'C#', 'React', 'Redis', 'Docker', 'Infisical', 'Grafana', 'Firebase Analytics', 'Google Analytics', 'Claude Code'],
-    skills: ['C#', '.NET Core / .NET Framework', 'React', 'Redis', 'Docker', 'Infisical', 'Grafana', 'Firebase Analytics', 'Google Analytics', 'Claude Code', 'Agent skills', 'MCP (FastMCP, Chrome MCP)', 'Prompt engineering', 'Dozzle', 'Microservices'],
+    stack: ['.NET', 'C#', 'React', 'Redis', 'Docker', 'Amazon Cognito', 'Unity', 'GitLab CI', 'Playwright', 'Storybook', 'Infisical', 'Grafana', 'Firebase Analytics', 'Google Analytics', 'Claude Code'],
+    skills: ['C#', '.NET Core / .NET Framework', 'React', 'Redis', 'Docker', 'GitLab CI', 'Playwright', 'Infisical', 'Grafana', 'Firebase Analytics', 'Google Analytics', 'Claude Code', 'Agent skills', 'MCP (FastMCP, Chrome MCP)', 'Prompt engineering', 'Dozzle', 'Microservices'],
   },
   {
     id: 'syntea',
@@ -77,13 +83,14 @@ export const projects: Project[] = [
     role: 'AI-driven conversational learning platform, for IU Internationale Hochschule',
     summary: 'Built the MVP from scratch in a team of 5 engineers, a Product Owner and a designer, as a Python/TypeScript monorepo combining a web chat UI, an LLM agent layer and backend services for profiles, courses and goals.',
     bullets: [
-      'Developed the LLM-powered agents and the prompting logic that orchestrates model calls across the conversational, profile and course workflows.',
+      'Developed the LLM-powered agents and the prompting logic that orchestrates model calls across the conversational, profile and course workflows, with user-selectable Anthropic and OpenAI models, including the agent loop that extracts sentiment and current and target skills from each interaction.',
+      'Built the agent’s curriculum-generation tool: the prompt and asynchronous generation logic that turns an approved learning path into a multi-chapter curriculum, and the chapter-progression flow in which the agent assesses from the conversation whether a learner has completed a chapter and advances them.',
       'Built major parts of the React + Vite chat UI, including core components, state management and the API integrations connecting the interface to the agent layer.',
       'Integrated frontend features with FastAPI endpoints and contributed to the shared Python services in the monorepo.',
       'Kept the monorepo green through automated testing, type checking and linting, in a Docker Compose environment with AWS services and GitHub Actions CI.',
       'Took part in MVP product meetings, contributing to feature scoping, UX decisions and prioritisation.',
     ],
-    stack: ['Python', 'FastAPI', 'TypeScript', 'React', 'Vite', 'Docker Compose', 'AWS', 'GitHub Actions'],
+    stack: ['Python', 'FastAPI', 'TypeScript', 'React', 'Vite', 'Anthropic API', 'OpenAI API', 'Docker Compose', 'AWS', 'GitHub Actions'],
     skills: ['Python', 'FastAPI', 'TypeScript', 'React', 'Vite', 'Docker Compose', 'AWS', 'GitHub Actions', 'Prompt engineering'],
   },
   {
@@ -92,7 +99,7 @@ export const projects: Project[] = [
     role: 'LLM-assisted candidate profile extraction, internal tool',
     summary: 'Designed and built end to end, on my own.',
     bullets: [
-      'Built a Chrome extension that reads candidate profiles in the browser and uses a small LLM to extract them into structured records, written straight into CodeChem’s recruitment systems. This removed manual re-keying and the transcription errors it caused.',
+      'Built a Chrome extension that reads candidate profiles in the browser and uses a small LLM to extract them into structured records, which are written straight into CodeChem’s recruitment systems. This removed manual re-keying and the transcription errors it caused.',
       'Served the model locally through Ollama: candidate profiles are personal data, so inference never leaves company infrastructure. This also eliminated per-token costs and rate limits for daily use.',
       'Tuned the prompting and extraction logic so a small local model reliably produces parseable structured output, with validation that catches malformed responses before they reach internal systems.',
     ],
@@ -109,10 +116,13 @@ export const projects: Project[] = [
     bullets: [
       'Sole developer on the frontend migration from server-rendered ASP.NET to client-side React + Redux. I proposed the approach and implemented it under the frontend/mobile lead, reworking how the client consumes and holds platform data.',
       'Built a cross-platform mobile app in Xamarin Forms, plus the .NET Framework endpoints serving it, extending the platform to offline field use with background job synchronisation.',
-      'Implemented customer-specific business processes by modelling each customer’s domain in the platform’s own entity and relationship structures.',
+      'Implemented customer-specific business processes (for example, incident management with role-based approval gates and audit flows) by modelling each customer’s domain in the platform’s entity and relationship structures and scripting its event hooks, often for several customers in parallel.',
+      'Co-designed, with the platform architect and scripting team, the fix for customer-wide latency caused by parent-to-child cascades across thousands of items during bulk updates, after added server capacity hadn’t helped: cascades moved to an idempotent, off-hours scheduled job with field locking.',
+      'Built a command-level error-handling wrapper for the Xamarin app (action plus fallback, with logging centralised so each error is recorded once) and fixed event-subscription leaks. After a cycle of newly surfaced bugs and fixes, crashes and errors dropped.',
+      'Proposed and piloted a per-sprint crash-triage rotation that turned AppCenter reports into reproducible, severity-routed bugs; the team adopted it as standard practice.',
       'Shipped every feature with automated tests and written manual test scenarios, and worked across teams to keep integrations stable while the client architecture changed.',
     ],
-    stack: ['C#', '.NET Core', '.NET Framework', 'ASP.NET', 'React', 'Redux', 'JavaScript', 'Xamarin Forms'],
+    stack: ['C#', '.NET Core', '.NET Framework', 'ASP.NET', 'React', 'Redux', 'JavaScript', 'Xamarin Forms', 'AppCenter'],
     skills: ['C#', '.NET Core / .NET Framework', 'ASP.NET', 'React', 'Redux', 'JavaScript'],
   },
 ];
@@ -131,9 +141,9 @@ export const research = {
   ],
   bullets: [
     'Building an end-to-end pipeline that scrapes Italian retailer advertising at scale and uses self-hosted open-weight LLMs to extract environmental, health and composition claims.',
-    'Grounding each claim in the legal provision it may violate (UCPD, ECGT green-claims amendments, Nutrition & Health Claims Regulation) via a hybrid retrieval-and-rerank architecture.',
-    'Running entirely on self-hosted infrastructure on an NVIDIA A100 HPC cluster (Slurm), for reproducibility and full data sovereignty, unlike most work in this area, which uses English corpora and closed APIs.',
-    'Benchmarking extraction accuracy and retrieval Hit@k across model families and prompt configurations against a stratified, human-validated golden set.',
+    'Grounding each claim in the legal provision it may violate (UCPD, ECGT green-claims amendments, Nutrition & Health Claims Regulation) via a hybrid retrieval-and-rerank architecture, using embedding mean-centering and CSLS hub correction.',
+    'Running entirely on self-hosted infrastructure on an NVIDIA A100 HPC cluster (Slurm), which ensures reproducibility and full data sovereignty, unlike most work in this area, which uses English corpora and closed APIs.',
+    'Built a stratified, human-validated golden set to benchmark extraction accuracy and retrieval Hit@k across model families and prompt configurations.',
   ],
   stack: ['Python', 'Ollama', 'Llama 3.2', 'DeepSeek', 'Hugging Face', 'sentence-transformers', 'BeautifulSoup', 'Slurm', 'CUDA'],
   skills: ['Python', 'Ollama', 'Hugging Face', 'sentence-transformers', 'BeautifulSoup', 'Slurm / HPC', 'CUDA', 'RAG', 'LLM evaluation (golden sets, Hit@k)', 'JSON/JSONL pipelines'],
@@ -179,7 +189,7 @@ export const languages = [
 ];
 
 export const other = [
-  { title: 'Transforming to a Circular Economy Business Model', where: 'AOTS, Osaka, Japan', when: 'Mar 2024', text: 'Studied circularity assessment tools and visited companies running circular-economy business models.' },
-  { title: 'PR Coordinator, Job Fair 2019', where: 'BEST Skopje', when: 'Nov 2018 – May 2019', text: 'Led the PR campaign connecting companies with students across social media, on-campus promotion and event-day coverage.' },
+  { title: 'Training, Transforming to a Circular Economy Business Model', where: 'AOTS (The Association for Overseas Technical Cooperation and Sustainable Partnerships), Osaka, Japan', when: 'Mar 2024', text: 'Studied circularity assessment tools and visited companies running circular-economy business models.' },
+  { title: 'PR Coordinator, Job Fair 2019', where: 'BEST (Board of European Students of Technology) Skopje', when: 'Nov 2018 – May 2019', text: 'Led the PR campaign connecting companies with students across social media, on-campus promotion and event-day coverage.' },
   { title: 'Certified Yoga Teacher', where: 'RYT-200, Ashtanga Vinyasa, Yoga Alliance, Skopje', when: '2023', text: '' },
 ];
